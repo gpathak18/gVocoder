@@ -8,12 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		C18AC00D1EA7D20B00C4EDA0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18AC00C1EA7D20B00C4EDA0 /* AppDelegate.swift */; };
-		C18AC00F1EA7D20B00C4EDA0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18AC00E1EA7D20B00C4EDA0 /* ViewController.swift */; };
+		C18AC00F1EA7D20B00C4EDA0 /* MainPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18AC00E1EA7D20B00C4EDA0 /* MainPanelViewController.swift */; };
 		C18AC0121EA7D20B00C4EDA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C18AC0101EA7D20B00C4EDA0 /* Main.storyboard */; };
 		C18AC0141EA7D20B00C4EDA0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C18AC0131EA7D20B00C4EDA0 /* Assets.xcassets */; };
 		C18AC0171EA7D20B00C4EDA0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C18AC0151EA7D20B00C4EDA0 /* LaunchScreen.storyboard */; };
 		C18AC0221EA7D20B00C4EDA0 /* VocalFunTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18AC0211EA7D20B00C4EDA0 /* VocalFunTests.swift */; };
 		C18AC02D1EA7D20B00C4EDA0 /* VocalFunUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18AC02C1EA7D20B00C4EDA0 /* VocalFunUITests.swift */; };
+		C18AC03B1EA7E46E00C4EDA0 /* DesinableButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18AC03A1EA7E46E00C4EDA0 /* DesinableButtons.swift */; };
+		C18AC03F1EA7F0B000C4EDA0 /* RecordingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18AC03E1EA7F0B000C4EDA0 /* RecordingViewController.swift */; };
+		C18AC0411EA7F9FC00C4EDA0 /* TransitionEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18AC0401EA7F9FC00C4EDA0 /* TransitionEffect.swift */; };
+		C1AF64FB1EAFC20F00D97FFE /* DesignableViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AF64FA1EAFC20F00D97FFE /* DesignableViews.swift */; };
+		C1B285891EA90BCC0032A62D /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C1B285881EA90BCC0032A62D /* Roboto-Light.ttf */; };
+		C1B2858B1EA90C470032A62D /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C1B2858A1EA90C470032A62D /* Roboto-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +42,7 @@
 /* Begin PBXFileReference section */
 		C18AC0091EA7D20B00C4EDA0 /* VocalFun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VocalFun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C18AC00C1EA7D20B00C4EDA0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C18AC00E1EA7D20B00C4EDA0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C18AC00E1EA7D20B00C4EDA0 /* MainPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPanelViewController.swift; sourceTree = "<group>"; };
 		C18AC0111EA7D20B00C4EDA0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C18AC0131EA7D20B00C4EDA0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C18AC0161EA7D20B00C4EDA0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,6 +53,12 @@
 		C18AC0281EA7D20B00C4EDA0 /* VocalFunUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VocalFunUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C18AC02C1EA7D20B00C4EDA0 /* VocalFunUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocalFunUITests.swift; sourceTree = "<group>"; };
 		C18AC02E1EA7D20B00C4EDA0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C18AC03A1EA7E46E00C4EDA0 /* DesinableButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DesinableButtons.swift; sourceTree = "<group>"; };
+		C18AC03E1EA7F0B000C4EDA0 /* RecordingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecordingViewController.swift; path = ../RecordingViewController.swift; sourceTree = "<group>"; };
+		C18AC0401EA7F9FC00C4EDA0 /* TransitionEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionEffect.swift; sourceTree = "<group>"; };
+		C1AF64FA1EAFC20F00D97FFE /* DesignableViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DesignableViews.swift; sourceTree = "<group>"; };
+		C1B285881EA90BCC0032A62D /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
+		C1B2858A1EA90C470032A62D /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,12 +109,18 @@
 		C18AC00B1EA7D20B00C4EDA0 /* VocalFun */ = {
 			isa = PBXGroup;
 			children = (
+				C18AC03E1EA7F0B000C4EDA0 /* RecordingViewController.swift */,
+				C1AF64FA1EAFC20F00D97FFE /* DesignableViews.swift */,
+				C18AC03A1EA7E46E00C4EDA0 /* DesinableButtons.swift */,
 				C18AC00C1EA7D20B00C4EDA0 /* AppDelegate.swift */,
-				C18AC00E1EA7D20B00C4EDA0 /* ViewController.swift */,
-				C18AC0101EA7D20B00C4EDA0 /* Main.storyboard */,
+				C1B2858A1EA90C470032A62D /* Roboto-Regular.ttf */,
+				C1B285881EA90BCC0032A62D /* Roboto-Light.ttf */,
 				C18AC0131EA7D20B00C4EDA0 /* Assets.xcassets */,
-				C18AC0151EA7D20B00C4EDA0 /* LaunchScreen.storyboard */,
 				C18AC0181EA7D20B00C4EDA0 /* Info.plist */,
+				C18AC0151EA7D20B00C4EDA0 /* LaunchScreen.storyboard */,
+				C18AC0101EA7D20B00C4EDA0 /* Main.storyboard */,
+				C18AC00E1EA7D20B00C4EDA0 /* MainPanelViewController.swift */,
+				C18AC0401EA7F9FC00C4EDA0 /* TransitionEffect.swift */,
 			);
 			path = VocalFun;
 			sourceTree = "<group>";
@@ -234,6 +252,8 @@
 			files = (
 				C18AC0171EA7D20B00C4EDA0 /* LaunchScreen.storyboard in Resources */,
 				C18AC0141EA7D20B00C4EDA0 /* Assets.xcassets in Resources */,
+				C1B2858B1EA90C470032A62D /* Roboto-Regular.ttf in Resources */,
+				C1B285891EA90BCC0032A62D /* Roboto-Light.ttf in Resources */,
 				C18AC0121EA7D20B00C4EDA0 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -259,8 +279,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C18AC00F1EA7D20B00C4EDA0 /* ViewController.swift in Sources */,
+				C18AC0411EA7F9FC00C4EDA0 /* TransitionEffect.swift in Sources */,
+				C18AC03F1EA7F0B000C4EDA0 /* RecordingViewController.swift in Sources */,
+				C1AF64FB1EAFC20F00D97FFE /* DesignableViews.swift in Sources */,
+				C18AC00F1EA7D20B00C4EDA0 /* MainPanelViewController.swift in Sources */,
 				C18AC00D1EA7D20B00C4EDA0 /* AppDelegate.swift in Sources */,
+				C18AC03B1EA7E46E00C4EDA0 /* DesinableButtons.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,6 +438,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = VocalFun/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = gpmax.VocalFun;
@@ -426,6 +451,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = VocalFun/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = gpmax.VocalFun;
@@ -507,6 +533,7 @@
 				C18AC0331EA7D20B00C4EDA0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C18AC0341EA7D20B00C4EDA0 /* Build configuration list for PBXNativeTarget "VocalFunTests" */ = {
 			isa = XCConfigurationList;
@@ -515,6 +542,7 @@
 				C18AC0361EA7D20B00C4EDA0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C18AC0371EA7D20B00C4EDA0 /* Build configuration list for PBXNativeTarget "VocalFunUITests" */ = {
 			isa = XCConfigurationList;
@@ -523,6 +551,7 @@
 				C18AC0391EA7D20B00C4EDA0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
