@@ -12,6 +12,10 @@ import AVFoundation
 
 class MainPanelViewController: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDelegate, CAAnimationDelegate {
     
+    @IBOutlet weak var bkgimg: UIImageView!
+    
+    @IBOutlet weak var vfx: UIVisualEffectView!
+    
     var recordingSession : AVAudioSession!
     var audioRecorder    : AVAudioRecorder!
     
@@ -22,6 +26,9 @@ class MainPanelViewController: UIViewController, AVAudioRecorderDelegate, AVAudi
     
     let swapImage = UIImage(named:"knob1")?.withRenderingMode(
         UIImageRenderingMode.alwaysTemplate)
+    
+//    let swapImage = UIImage(named:"main_knob")?.withRenderingMode(
+//        UIImageRenderingMode.alwaysTemplate)
     
     var meterTimer: Timer?
     var micPeak: Float = 0
@@ -39,7 +46,7 @@ class MainPanelViewController: UIViewController, AVAudioRecorderDelegate, AVAudi
         super.viewDidLoad()
         
         recordingSession = AVAudioSession.sharedInstance()
-        try! audioRecorder = AVAudioRecorder(url: soundURL(fileName: "recording")!, settings: [:])
+        try! audioRecorder = AVAudioRecorder(url: soundURL(fileName: "recording1")!, settings: [:])
         
         meterTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { (timer:Timer) in
             
@@ -53,11 +60,11 @@ class MainPanelViewController: UIViewController, AVAudioRecorderDelegate, AVAudi
         audioEngine.attach(audioPlayerNode)
         audioEngine.attach(backAudioPlayerNode)
         
-        var buttonColor : UIColor = UIColor.init(red: 178/255, green: 254/255, blue: 247/255, alpha: 1.0)
+        var buttonColor : UIColor = UIColor.init(red: 128/255, green: 216/255, blue: 255/255, alpha: 1.0)
         getCircleButton(bgColor : buttonColor)
         buttonColor  = UIColor.init(red: 100/255, green: 216/255, blue: 203/255, alpha: 1.0)
         getCircleButton(bgColor : buttonColor)
-        buttonColor  = UIColor.init(red: 128/255, green: 216/255, blue: 255/255, alpha: 1.0)
+        buttonColor  = UIColor.init(red: 178/255, green: 254/255, blue: 247/255, alpha: 1.0)
         getCircleButton(bgColor : buttonColor)
         
         
@@ -73,20 +80,20 @@ class MainPanelViewController: UIViewController, AVAudioRecorderDelegate, AVAudi
             UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0, options: [.curveEaseInOut], animations: {
                 let button : UIButton = self!.circleButton[2]
                 button.transform = CGAffineTransform(scaleX: finalPeak*2.5, y: finalPeak*2.5)
-                button.backgroundColor = UIColor.init(red: 128/255, green: 216/255, blue: 255/255, alpha: 1.0)
+                button.backgroundColor = UIColor.init(red: 128*finalPeak/255, green: 216*finalPeak/255, blue: 255*finalPeak/255, alpha: 1.0)
             }, completion: nil)
             
             
             UIView.animate(withDuration: 0.4, delay : 0.1, usingSpringWithDamping: 0.3, initialSpringVelocity: 0, options: [.curveEaseInOut], animations: {
                 let button : UIButton = self!.circleButton[1]
                 button.transform = CGAffineTransform(scaleX: finalPeak*2, y: finalPeak*2)
-                button.backgroundColor = UIColor.init(red: 100/255, green: 216/255, blue: 203/255, alpha: 1.0)
+                button.backgroundColor = UIColor.init(red: 100*finalPeak/255, green: 216*finalPeak/255, blue: 203*finalPeak/255, alpha: 1.0)
             }, completion: nil)
             
             UIView.animate(withDuration: 0.5, delay : 0.2, usingSpringWithDamping: 0.3, initialSpringVelocity: 0, options: [.curveEaseInOut], animations: {
                 let button : UIButton = self!.circleButton[0]
                 button.transform = CGAffineTransform(scaleX: finalPeak*1.5, y: finalPeak*1.5)
-                button.backgroundColor = UIColor.init(red: 178/255, green: 254/255, blue: 247/255, alpha: 1.0)
+                button.backgroundColor = UIColor.init(red: 178*finalPeak/255, green: 254*finalPeak/255, blue: 247*finalPeak/255, alpha: 1.0)
             }, completion: nil)
         }
 
@@ -95,7 +102,9 @@ class MainPanelViewController: UIViewController, AVAudioRecorderDelegate, AVAudi
         
         
         
-        let img = swapImage?.cgImage?.cropping(to: CGRect(x: 0.0, y: 80.0*1, width: 100, height: 72))!
+        let img = swapImage?.cgImage?.cropping(to: CGRect(x: 0.0, y: 80.0*0, width: 80, height: 72))!
+        
+       // print(swapImage?.cgImage?.width)
         
         let finalimg = UIImage(cgImage: img!)
         
@@ -103,69 +112,47 @@ class MainPanelViewController: UIViewController, AVAudioRecorderDelegate, AVAudi
         imgView.image = finalimg
         imgView.isUserInteractionEnabled = true
         
-        let myPanGestureRecognizer = RotationGestureRecognizer(target: self, action: "handleRotation:")
+        let recognizer = UIPanGestureRecognizer(target: self, action: #selector(handleRotation))
         
-        imgView.addGestureRecognizer(myPanGestureRecognizer)
+        recognizer.minimumNumberOfTouches = 1
+        recognizer.maximumNumberOfTouches = 1
+        
+        imgView.addGestureRecognizer(recognizer)
        
-        
+        self.view.sendSubview(toBack: vfx)
+
+        self.view.sendSubview(toBack: bkgimg)
     }
     
-    func handleRotation(sender: AnyObject) {
-        let gr = sender as! RotationGestureRecognizer
-        
-        // 1. Mid-point angle
-        let midPointAngle = (2.0 * CGFloat(M_PI) + self.startAngle - self.endAngle) / 2.0 + self.endAngle
-        
-        // 2. Ensure the angle is within a suitable range
-        var boundedAngle = gr.rotation
-        if boundedAngle > midPointAngle {
-            boundedAngle -= 2.0 * CGFloat(M_PI)
-        } else if boundedAngle < (midPointAngle - 2.0 * CGFloat(M_PI)) {
-            boundedAngle += 2 * CGFloat(M_PI)
-        }
-        
-        // 3. Bound the angle to within the suitable range
-        boundedAngle = min(self.endAngle, max(self.startAngle, boundedAngle))
-        
-        // 4. Convert the angle to a value
-        let angleRange = endAngle - startAngle
-        let valueRange = maximumValue - minimumValue
-        let valueForAngle = Float(boundedAngle - startAngle) / Float(angleRange) * valueRange + minimumValue
-        
-        // 5. Set the control to this value
-        self.value = valueForAngle
-    }
+    var rotation = 100
+    var index = 0
     
-    var lastTick = 0
-    
-    func myPanAction(recognizer: UIPanGestureRecognizer) {
+    func handleRotation(recognizer: UIPanGestureRecognizer) {
         
         let translation = recognizer.translation(in: self.view)
-        
-        let x = abs(Int(translation.x))
-        
+       
         if ((recognizer.state != UIGestureRecognizerState.ended) &&
             (recognizer.state != UIGestureRecognizerState.failed)) {
-
-            let index = x + lastTick
             
+            index = rotation - Int(translation.y)
+        
             if index >= 0 && index <= 100 {
-                
-                print(index)
-                
+               
                 let img = swapImage?.cgImage?.cropping(to: CGRect(x: 0, y: 80*index, width: 100, height: 72))!
                 
                 let finalimg = UIImage(cgImage: img!)
                 
-                
                 imgView.image = finalimg
+                
+                
             }
-            
         } else {
-             lastTick = x
+            
+            rotation = index
             
         }
     }
+    
     
     func animateButtonBackground(borderColor: UIColor){
         
@@ -282,26 +269,28 @@ class MainPanelViewController: UIViewController, AVAudioRecorderDelegate, AVAudi
             audioRecorder.prepareToRecord()
             audioRecorder.record()
             
-            UIView.animate(withDuration: 0.3, delay : 0.0,  usingSpringWithDamping: 0.3, initialSpringVelocity: 0, options: [.curveEaseInOut],animations: {
-                let button : UIButton = self.circleButton[2]
-                button.transform = CGAffineTransform(scaleX: 1.7, y: 1.7)
-            }, completion: nil )
             
+            UIView.animate(withDuration: 0.2, delay: 0.0,  options: [.curveEaseInOut], animations: {
+                let button : UIButton = self.circleButton[0]
+                button.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            }, completion: nil)
+
             
-            UIView.animate(withDuration: 0.3, delay : 0.1, usingSpringWithDamping: 0.3, initialSpringVelocity: 0, options: [.curveEaseInOut], animations: {
+            UIView.animate(withDuration: 0.3, delay : 0.1, options: [.curveEaseInOut], animations: {
                 let button : UIButton = self.circleButton[1]
                 button.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
             }, completion : nil)
 
-            UIView.animate(withDuration: 0.2, delay: 0.2, usingSpringWithDamping: 0.3, initialSpringVelocity: 0, options: [.curveEaseInOut], animations: {
-                let button : UIButton = self.circleButton[0]
-                button.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            
+            UIView.animate(withDuration: 0.4, delay : 0.2,   options: [.curveEaseInOut],animations: {
+                let button : UIButton = self.circleButton[2]
+                button.transform = CGAffineTransform(scaleX: 1.7, y: 1.7)
             }, completion: { finished in
                 
                 if finished {
                     self.timerEvent.scheduleRepeating(deadline: DispatchTime.now(), interval: DispatchTimeInterval.milliseconds(50))
                     self.timerEvent.resume()
-
+                    
                 }
                 
             })

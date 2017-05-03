@@ -5,15 +5,15 @@
 //  Created by Gaurav Pathak on 4/30/17.
 //  Copyright © 2017 gpmax. All rights reserved.
 //
-
+import UIKit
 import UIKit.UIGestureRecognizerSubclass
 
-private class RotationGestureRecognizer: UIPanGestureRecognizer {
+class RotationGestureRecognizer: UIPanGestureRecognizer {
     
     var rotation: CGFloat = 0.0
 
     override init(target: Any?, action: Selector?) {
-        super.init(target: target, action: action)
+        super.init(target: target, action: #selector(MainPanelViewController.handleRotation))
         
         minimumNumberOfTouches = 1
         maximumNumberOfTouches = 1
