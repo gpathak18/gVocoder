@@ -22,7 +22,6 @@ class MainPanelViewController: UIViewController, AVAudioRecorderDelegate, AVAudi
     @IBOutlet weak var imgView: UIImageView!
     var audioEngine     = AVAudioEngine()
     var audioPlayerNode = AVAudioPlayerNode()
-    var backAudioPlayerNode = AVAudioPlayerNode()
     
     let swapImage = UIImage(named:"knob1")?.withRenderingMode(
         UIImageRenderingMode.alwaysTemplate)
@@ -41,24 +40,31 @@ class MainPanelViewController: UIViewController, AVAudioRecorderDelegate, AVAudi
     
     @IBOutlet weak var micButton: DesinableButtons!
     
+    let audioManager : AudioManager = AudioManager()
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
-        recordingSession = AVAudioSession.sharedInstance()
-        try! audioRecorder = AVAudioRecorder(url: soundURL(fileName: "recording1")!, settings: [:])
+//        recordingSession = AVAudioSession.sharedInstance()
+        
+        //try! audioRecorder = AVAudioRecorder(url: soundURL(fileName: "recording")!, settings: [:])
         
         meterTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { (timer:Timer) in
             
-            if let audioRecorder = self.audioRecorder {
-                audioRecorder.updateMeters()
-                self.micAvgPow = audioRecorder.averagePower(forChannel: 0)
-                self.micPeak = audioRecorder.peakPower(forChannel: 0)
-             }
+//            if let audioRecorder = self.audioRecorder {
+//                audioRecorder.updateMeters()
+//                self.micPeak = audioRecorder.peakPower(forChannel: 0)
+//             }
+            
+            guard (self.audioManager) != nil else {
+                return
+            }
+            
+            self.micPeak = self.audioManager.volumeFloat
+            
         })
         
-        audioEngine.attach(audioPlayerNode)
-        audioEngine.attach(backAudioPlayerNode)
         
         var buttonColor : UIColor = UIColor.init(red: 128/255, green: 216/255, blue: 255/255, alpha: 1.0)
         getCircleButton(bgColor : buttonColor)
@@ -70,12 +76,21 @@ class MainPanelViewController: UIViewController, AVAudioRecorderDelegate, AVAudi
         
         timerEvent.setEventHandler { [weak self] in
             
-            guard (self?.audioRecorder) != nil else {
+//            guard (self?.audioRecorder) != nil else {
+//                return
+//            }
+            
+            guard (self?.audioManager) != nil else {
                 return
             }
             
-            let percent = (Double((self?.micPeak)!) + 160) / 160
+           let percent = (Double((self?.micPeak)!) + 160) / 160
+           
            let finalPeak = CGFloat(percent)
+            
+            print(String(describing: finalPeak))
+            
+           //let finalPeak = CGFloat(self!.micPeak)
             
             UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0, options: [.curveEaseInOut], animations: {
                 let button : UIButton = self!.circleButton[2]
@@ -97,62 +112,45 @@ class MainPanelViewController: UIViewController, AVAudioRecorderDelegate, AVAudi
             }, completion: nil)
         }
 
-        animateButtonBackground(borderColor: UIColor.green)
+        self.timerEvent.scheduleRepeating(deadline: DispatchTime.now(), interval: DispatchTimeInterval.milliseconds(50))
         
-        
-        
-        
-        let img = swapImage?.cgImage?.cropping(to: CGRect(x: 0.0, y: 80.0*0, width: 80, height: 72))!
-        
-       // print(swapImage?.cgImage?.width)
-        
-        let finalimg = UIImage(cgImage: img!)
-        
-        
-        imgView.image = finalimg
-        imgView.isUserInteractionEnabled = true
-        
-        let recognizer = UIPanGestureRecognizer(target: self, action: #selector(handleRotation))
-        
-        recognizer.minimumNumberOfTouches = 1
-        recognizer.maximumNumberOfTouches = 1
-        
-        imgView.addGestureRecognizer(recognizer)
+        let borderColor  = UIColor.init(red: 255/255, green: 255/255, blue: 255/255, alpha: 1.0)
+        animateButtonBackground(borderColor: borderColor)
        
         self.view.sendSubview(toBack: vfx)
 
         self.view.sendSubview(toBack: bkgimg)
-    }
-    
-    var rotation = 100
-    var index = 0
-    
-    func handleRotation(recognizer: UIPanGestureRecognizer) {
         
-        let translation = recognizer.translation(in: self.view)
-       
-        if ((recognizer.state != UIGestureRecognizerState.ended) &&
-            (recognizer.state != UIGestureRecognizerState.failed)) {
-            
-            index = rotation - Int(translation.y)
+        let inputNode = audioEngine.inputNode
+        let bus = 0
         
-            if index >= 0 && index <= 100 {
-               
-                let img = swapImage?.cgImage?.cropping(to: CGRect(x: 0, y: 80*index, width: 100, height: 72))!
-                
-                let finalimg = UIImage(cgImage: img!)
-                
-                imgView.image = finalimg
-                
-                
-            }
-        } else {
-            
-            rotation = index
+        inputNode?.installTap(onBus: bus, bufferSize: 2048, format: inputNode?.inputFormat(forBus: bus)) {
+            (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
             
         }
+        
+        audioManager.initializeAudioEngine()
+        
+        //prepareAudioEngine()
+       
     }
     
+    var audioBuffer = AVAudioPCMBuffer()
+    
+    @IBAction func playRecording(_ sender: Any) {
+        
+//         if isRecording {
+//            audioManager.startRecording()
+//            isRecording = false;
+//         } else {
+//            audioManager.stopRecording()
+//            isRecording = true;
+//         }
+        
+       //try! recording.read(into: audioBuffer)
+        
+      // audioPlayerNode.play()
+    }
     
     func animateButtonBackground(borderColor: UIColor){
         
@@ -160,7 +158,7 @@ class MainPanelViewController: UIViewController, AVAudioRecorderDelegate, AVAudi
         let color: CABasicAnimation = CABasicAnimation(keyPath: "borderColor")
         color.fromValue = UIColor.clear.cgColor
         color.toValue = borderColor.cgColor
-        color.duration = 3.0
+        color.duration = 0.5
         color.autoreverses = true
         color.fillMode = kCAFillModeForwards
         color.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
@@ -174,63 +172,74 @@ class MainPanelViewController: UIViewController, AVAudioRecorderDelegate, AVAudi
         if !isStopBorderAnim {
             animateButtonBackground(borderColor: UIColor.red)
         } else {
-            animateButtonBackground(borderColor: UIColor.green)
+            animateButtonBackground(borderColor: UIColor.white)
         }
     }
     
-    func playEffect(backTrack: String) {
+    
+    func prepareAudioEngine() {
         
-        let fileFront = try! AVAudioFile(forReading: soundURL(fileName: "recording")!)
+        let recording = try! AVAudioFile(forReading: soundURL(fileName: "recording")!)
         
-        let fileBack = try! AVAudioFile(forReading: URL.init(string: Bundle.main.path(forResource: backTrack, ofType: "caf")!)! )
+        audioBuffer = AVAudioPCMBuffer(pcmFormat: recording.processingFormat, frameCapacity: AVAudioFrameCount(recording.length))
         
-        let audioBufferFront = AVAudioPCMBuffer(pcmFormat: fileFront.processingFormat, frameCapacity: AVAudioFrameCount(fileFront.length))
+        //try! recording.read(into: audioBuffer)
         
-        let audioBufferBack = AVAudioPCMBuffer(pcmFormat: fileBack.processingFormat, frameCapacity: AVAudioFrameCount(fileBack.length))
         
-        try! fileFront.read(into: audioBufferFront)
-        try! fileBack.read(into: audioBufferBack)
-        
-        // audioEngine.attach(effect)
-        
-        audioEngine.connect(audioPlayerNode, to: audioEngine.mainMixerNode, format: audioBufferFront.format)
-        
-        audioEngine.connect(backAudioPlayerNode, to: audioEngine.mainMixerNode, format: audioBufferBack.format)
-        
-        audioPlayerNode.scheduleBuffer(audioBufferFront, at: nil, options: .interrupts, completionHandler: nil)
-        
-        backAudioPlayerNode.scheduleBuffer(audioBufferBack, at: nil, options: .interrupts, completionHandler: nil)
-        
+        addDistortion(audioBuffer: audioBuffer)
+        addReverb(audioBuffer: audioBuffer)
+        audioPlayerNode.scheduleBuffer(audioBuffer, at: nil, options: .interrupts, completionHandler: nil)
         audioEngine.prepare()
-        try! audioEngine.start()
+
+    }
+    
+    
+    let pitchEffect = AVAudioUnitTimePitch()
+    let reverb = AVAudioUnitReverb()
+    let distortion = AVAudioUnitDistortion()
+    
+    func addDistortion(audioBuffer: AVAudioPCMBuffer){
+       
+        audioEngine.attach(distortion)
         
+        audioEngine.connect(audioPlayerNode, to: distortion, format: audioBuffer.format)
         
-        audioPlayerNode.play()
-        backAudioPlayerNode.volume = 0.3
-        backAudioPlayerNode.play()
+        audioEngine.connect(distortion, to: audioEngine.mainMixerNode, format: audioBuffer.format)
         
+    }
+    
+    
+    func addReverb(audioBuffer: AVAudioPCMBuffer){
+
+        audioEngine.attach(reverb)
         
+        audioEngine.connect(audioPlayerNode, to: distortion, format: audioBuffer.format)
+        
+        audioEngine.connect(distortion, to: audioEngine.mainMixerNode, format: audioBuffer.format)
         
     }
     
     @IBAction func barButtonPressed(_ sender: Any) {
-        
-        //        let distortion = AVAudioUnitDistortion()
-        //        distortion.loadFactoryPreset(AVAudioUnitDistortionPreset.speechRadioTower)
-        //        distortion.wetDryMix = 25
-        
-        playEffect(backTrack: "Traffic")
+    
+        pitchEffect.pitch = -500
+        pitchEffect.rate = 0.5
         
     }
     
     @IBAction func poolButtonPressed(_ sender: Any) {
         
-        //        let reverb = AVAudioUnitReverb()
-        //        reverb.loadFactoryPreset(AVAudioUnitReverbPreset.cathedral)
-        //        reverb.wetDryMix = 50
         
-        playEffect(backTrack: "Traffic")
+        reverb.loadFactoryPreset(AVAudioUnitReverbPreset.cathedral)
+        reverb.wetDryMix = 50
+      
+   }
+    
+    @IBAction func distortionEffect(_ sender: Any) {
         
+        
+        distortion.loadFactoryPreset(AVAudioUnitDistortionPreset.drumsLoFi)
+        distortion.wetDryMix = 50
+    
     }
     
     func getCircleButton(bgColor : UIColor){
@@ -257,38 +266,38 @@ class MainPanelViewController: UIViewController, AVAudioRecorderDelegate, AVAudi
     
     @IBAction func recordButtonPressed(_ sender: Any) {
         
-        
         if isRecording {
             
             micButton.setImage( #imageLiteral(resourceName: "ic_stop_36pt"), for: .normal)
            
-            try! recordingSession.setActive(true)
+//            try! recordingSession.setActive(true)
+//            
+//            audioRecorder.delegate = self
+//            audioRecorder.isMeteringEnabled = true
+//            audioRecorder.prepareToRecord()
+//            audioRecorder.record()
             
-            audioRecorder.delegate = self
-            audioRecorder.isMeteringEnabled = true
-            audioRecorder.prepareToRecord()
-            audioRecorder.record()
-            
+            audioManager.startRecording()
             
             UIView.animate(withDuration: 0.2, delay: 0.0,  options: [.curveEaseInOut], animations: {
                 let button : UIButton = self.circleButton[0]
-                button.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                button.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
             }, completion: nil)
 
             
-            UIView.animate(withDuration: 0.3, delay : 0.1, options: [.curveEaseInOut], animations: {
+            UIView.animate(withDuration: 0.2, delay : 0.1, options: [.curveEaseInOut], animations: {
                 let button : UIButton = self.circleButton[1]
-                button.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+                button.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
             }, completion : nil)
 
             
-            UIView.animate(withDuration: 0.4, delay : 0.2,   options: [.curveEaseInOut],animations: {
+            UIView.animate(withDuration: 0.2, delay : 0.2,   options: [.curveEaseInOut],animations: {
                 let button : UIButton = self.circleButton[2]
-                button.transform = CGAffineTransform(scaleX: 1.7, y: 1.7)
+                button.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
             }, completion: { finished in
                 
                 if finished {
-                    self.timerEvent.scheduleRepeating(deadline: DispatchTime.now(), interval: DispatchTimeInterval.milliseconds(50))
+
                     self.timerEvent.resume()
                     
                 }
@@ -304,6 +313,7 @@ class MainPanelViewController: UIViewController, AVAudioRecorderDelegate, AVAudi
             
             micButton.setImage( #imageLiteral(resourceName: "ic_mic_36pt") , for: .normal)
             
+            audioManager.stopRecording()
             
             UIView.animate(withDuration: 0.2, delay : 0.0,  options: [.curveEaseInOut],animations: {
                 let button : UIButton = self.circleButton[0]
@@ -325,9 +335,9 @@ class MainPanelViewController: UIViewController, AVAudioRecorderDelegate, AVAudi
             isStopBorderAnim = true
             
             timerEvent.suspend()
-            audioRecorder.stop()
-            audioEngine.stop()
-            try! recordingSession.setActive(false)
+//            audioRecorder.stop()
+//            audioEngine.stop()
+//            try! recordingSession.setActive(false)
             
             isRecording = true
             
@@ -342,7 +352,7 @@ class MainPanelViewController: UIViewController, AVAudioRecorderDelegate, AVAudi
         let urls = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
         let documentDirectory = urls[0] as NSURL
         let soundURL = documentDirectory.appendingPathComponent(fileName+".wav")
-        //print(soundURL as Any)
+        print(soundURL as Any)
         return soundURL as URL?
     }
     
@@ -363,10 +373,6 @@ class MainPanelViewController: UIViewController, AVAudioRecorderDelegate, AVAudi
     }
     
     
-    @IBAction func knobDragged(_ sender: Any) {
-        
-        
-    }
     
     
 }
