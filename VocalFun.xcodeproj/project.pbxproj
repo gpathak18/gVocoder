@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C1555D0B1EB62A26007B00C3 /* RotationGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1555D0A1EB62A26007B00C3 /* RotationGestureRecognizer.swift */; };
 		C18AC00D1EA7D20B00C4EDA0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18AC00C1EA7D20B00C4EDA0 /* AppDelegate.swift */; };
 		C18AC00F1EA7D20B00C4EDA0 /* MainPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18AC00E1EA7D20B00C4EDA0 /* MainPanelViewController.swift */; };
 		C18AC0121EA7D20B00C4EDA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C18AC0101EA7D20B00C4EDA0 /* Main.storyboard */; };
@@ -17,6 +16,7 @@
 		C18AC02D1EA7D20B00C4EDA0 /* VocalFunUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18AC02C1EA7D20B00C4EDA0 /* VocalFunUITests.swift */; };
 		C18AC03B1EA7E46E00C4EDA0 /* DesinableButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18AC03A1EA7E46E00C4EDA0 /* DesinableButtons.swift */; };
 		C19E84A61EB3B1F200CC6D67 /* Traffic.caf in Resources */ = {isa = PBXBuildFile; fileRef = C19E84A51EB3B1F200CC6D67 /* Traffic.caf */; };
+		C19EB9C31EC26B8C00A9F520 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19EB9C21EC26B8C00A9F520 /* AudioManager.swift */; };
 		C1AF64FB1EAFC20F00D97FFE /* DesignableViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AF64FA1EAFC20F00D97FFE /* DesignableViews.swift */; };
 		C1B285891EA90BCC0032A62D /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C1B285881EA90BCC0032A62D /* Roboto-Light.ttf */; };
 		C1B2858B1EA90C470032A62D /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C1B2858A1EA90C470032A62D /* Roboto-Regular.ttf */; };
@@ -40,7 +40,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		C1555D0A1EB62A26007B00C3 /* RotationGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotationGestureRecognizer.swift; sourceTree = "<group>"; };
 		C18AC0091EA7D20B00C4EDA0 /* VocalFun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VocalFun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C18AC00C1EA7D20B00C4EDA0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C18AC00E1EA7D20B00C4EDA0 /* MainPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPanelViewController.swift; sourceTree = "<group>"; };
@@ -56,6 +55,7 @@
 		C18AC02E1EA7D20B00C4EDA0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C18AC03A1EA7E46E00C4EDA0 /* DesinableButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DesinableButtons.swift; sourceTree = "<group>"; };
 		C19E84A51EB3B1F200CC6D67 /* Traffic.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Traffic.caf; sourceTree = "<group>"; };
+		C19EB9C21EC26B8C00A9F520 /* AudioManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		C1AF64FA1EAFC20F00D97FFE /* DesignableViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DesignableViews.swift; sourceTree = "<group>"; };
 		C1B285881EA90BCC0032A62D /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
 		C1B2858A1EA90C470032A62D /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
@@ -119,8 +119,8 @@
 				C18AC0181EA7D20B00C4EDA0 /* Info.plist */,
 				C18AC0151EA7D20B00C4EDA0 /* LaunchScreen.storyboard */,
 				C18AC0101EA7D20B00C4EDA0 /* Main.storyboard */,
-				C1555D0A1EB62A26007B00C3 /* RotationGestureRecognizer.swift */,
 				C18AC00E1EA7D20B00C4EDA0 /* MainPanelViewController.swift */,
+				C19EB9C21EC26B8C00A9F520 /* AudioManager.swift */,
 			);
 			path = VocalFun;
 			sourceTree = "<group>";
@@ -291,8 +291,8 @@
 				C1AF64FB1EAFC20F00D97FFE /* DesignableViews.swift in Sources */,
 				C18AC00F1EA7D20B00C4EDA0 /* MainPanelViewController.swift in Sources */,
 				C18AC00D1EA7D20B00C4EDA0 /* AppDelegate.swift in Sources */,
+				C19EB9C31EC26B8C00A9F520 /* AudioManager.swift in Sources */,
 				C18AC03B1EA7E46E00C4EDA0 /* DesinableButtons.swift in Sources */,
-				C1555D0B1EB62A26007B00C3 /* RotationGestureRecognizer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
